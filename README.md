@@ -1,4 +1,4 @@
-# 🌾 Proyek AgroVA: Solusi Cerdas untuk Ketahanan Pangan di Indonesia
+# 🌾 AgroVA: Solusi Cerdas untuk Ketahanan Pangan di Indonesia
 
 ## 📝 Ringkasan Eksekutif
 
