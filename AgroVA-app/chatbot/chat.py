@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Load intents
-with open('C:/Users/Sinta/Documents/Larskar AI/Capstone/AgroVA-app/chatbot/intents.json', 'r', encoding='utf-8') as f:
+with open(r'intents.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 # Data tanaman dan penyakit
