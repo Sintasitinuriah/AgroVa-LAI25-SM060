@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>📷 Prediksi Penyakit {{ plant }}</h2>
+
+<form method="POST" enctype="multipart/form-data" onsubmit="return prepareImageData()">
+  <input type="hidden" id="imageData" name="imageData">
+
+  <!-- Kamera -->
+  <div style="margin-bottom: 10px;">
+    <button type="button" onclick="showCamera()">🎥 Buka Kamera</button>
+    <div id="camera-section" style="display:none;">
+      <video id="video" width="100%" autoplay playsinline></video>
+      <button type="button" onclick="takePicture()">📸 Ambil Foto</button>
+      <canvas id="canvas" style="display:none;"></canvas>
+    </div>
+  </div>
+
+  <!-- Upload -->
+  <div style="margin-bottom: 10px;">
+    <button type="button" onclick="showUpload()">📁 Unggah Gambar</button>
+    <div id="upload-section" style="display:none;">
+      <input type="file" id="imageFile" name="image" accept="image/*">
+    </div>
+  </div>
+
+  <button type="submit">🔍 Prediksi</button>
+</form>
+
+{% if result %}
+  <div style="margin-top:20px;">
+    <h3>🔎 Hasil Prediksi: <strong>{{ result }}</strong></h3>
+  </div>
+{% endif %}
+
+<script>
+let videoStream;
+
+function showCamera() {
+  document.getElementById('camera-section').style.display = 'block';
+  document.getElementById('upload-section').style.display = 'none';
+  document.getElementById('imageFile').required = false;
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      videoStream = stream;
+      document.getElementById('video').srcObject = stream;
+    })
+    .catch(err => alert("Tidak bisa akses kamera: " + err.message));
+}
+
+function showUpload() {
+  document.getElementById('camera-section').style.display = 'none';
+  document.getElementById('upload-section').style.display = 'block';
+  document.getElementById('imageFile').required = true;
+
+  if (videoStream) {
+    videoStream.getTracks().forEach(track => track.stop());
+  }
+}
+
+function takePicture() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const context = canvas.getContext('2d');
+  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  const imageData = canvas.toDataURL('image/png');
+  document.getElementById('imageData').value = imageData;
+  alert("📸 Gambar berhasil diambil.");
+}
+
+function prepareImageData() {
+  const fromUpload = document.getElementById('upload-section').style.display === 'block';
+  const fromCamera = document.getElementById('camera-section').style.display === 'block';
+  if (!fromUpload && !fromCamera) {
+    alert('Pilih sumber gambar terlebih dahulu.');
+    return false;
+  }
+  return true;
+}
+</script>
+{% endblock %}

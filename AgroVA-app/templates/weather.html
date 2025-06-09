@@ -1,146 +1,181 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h2>🧪 Prediksi Penyakit Tanaman</h2>
+
+<!-- ==== FORM UTAMA (1 Model) ==== -->
+<h2>📷 Prediksi Penyakit Umum</h2>
+<form method="POST" action="/predict-main" enctype="multipart/form-data" onsubmit="return prepareImageDataMain()">
+  <input type="hidden" id="imageData-main" name="imageData">
+
+  <!-- Kamera -->
+  <div style="margin-bottom: 10px;">
+    <button type="button" onclick="showCameraMain()">🎥 Buka Kamera</button>
+    <div id="camera-section-main" style="display:none;">
+      <video id="video-main" width="100%" autoplay playsinline></video>
+      <button type="button" onclick="takePictureMain()">📸 Ambil Foto</button>
+      <canvas id="canvas-main" style="display:none;"></canvas>
+    </div>
+  </div>
+
+  <!-- Upload -->
+  <div style="margin-bottom: 10px;">
+    <button type="button" onclick="showUploadMain()">📁 Unggah Gambar</button>
+    <div id="upload-section-main" style="display:none;">
+      <input type="file" id="imageFile-main" name="image" accept="image/*">
+    </div>
+  </div>
+
+  <button type="submit">🔍 Prediksi</button>
+</form>
+
+<!-- Hasil prediksi dari form utama -->
+{% if result %}
+  <div style="margin-top:20px;">
+    <h3>🔎 Hasil Prediksi (Umum): <strong>{{ result }}</strong></h3>
+  </div>
+{% endif %}
+
+
+<!-- ==== PILIH TANAMAN ==== -->
+<h2>🧪 Prediksi Penyakit Tanaman Spesifik</h2>
 <div class="prediction-card-grid">
-  <div class="prediction-card" onclick="openModal('padi')">
-    <h3>Padi</h3>
-    <p>Prediksi penyakit padi</p>
-  </div>
-  <div class="prediction-card" onclick="openModal('singkong')">
-    <h3>Singkong</h3>
-    <p>Prediksi penyakit singkong</p>
-  </div>
-  <div class="prediction-card" onclick="openModal('gandum')">
-    <h3>Gandum</h3>
-    <p>Prediksi penyakit gandum</p>
-  </div>
-  <div class="prediction-card" onclick="openModal('kentang')">
-    <h3>Kentang</h3>
-    <p>Prediksi penyakit kentang</p>
-  </div>
+  <div class="prediction-card" onclick="openModal('padi')"><h3>Padi</h3><p>Prediksi penyakit padi</p></div>
+  <div class="prediction-card" onclick="openModal('singkong')"><h3>Singkong</h3><p>Prediksi penyakit singkong</p></div>
+  <div class="prediction-card" onclick="openModal('gandum')"><h3>Gandum</h3><p>Prediksi penyakit gandum</p></div>
+  <div class="prediction-card" onclick="openModal('kentang')"><h3>Kentang</h3><p>Prediksi penyakit kentang</p></div>
 </div>
 
-<!-- Modal -->
+<!-- ==== MODAL UNTUK PREDIKSI KHUSUS ==== -->
 <div id="predictionModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal()">&times;</span>
     <h3 id="modal-title">Prediksi</h3>
 
-    <!-- Tombol pilih mode -->
+    <!-- Mode -->
     <div class="mode-toggle">
-    <button type="button" onclick="showUpload()">🗂 Upload</button>
-    <button type="button" onclick="showCamera()">📷 Kamera</button>
+      <button type="button" onclick="showUploadModal()">🗂 Upload</button>
+      <button type="button" onclick="showCameraModal()">📷 Kamera</button>
     </div>
 
-    <!-- Form Prediksi -->
-    <form method="POST" enctype="multipart/form-data" action="/predict" onsubmit="return prepareImageData()">
-    <input type="hidden" name="plant" id="plant-type">
+    <form method="POST" action="/predict-plant" enctype="multipart/form-data" onsubmit="return prepareImageDataModal()">
+      <input type="hidden" name="plant" id="plant-type">
+      <input type="hidden" id="imageData-modal" name="imageData">
 
-    <!-- Kamera -->
-    <div id="camera-section" style="display: none;">
-        <video id="video" width="100%" autoplay playsinline></video>
-        <button type="button" onclick="takePicture()">📸 Ambil Foto</button>
-        <canvas id="canvas" style="display: none;"></canvas>
-        <input type="hidden" id="imageData" name="imageData">
-    </div>
+      <!-- Kamera -->
+      <div id="camera-section-modal" style="display:none;">
+        <video id="video-modal" width="100%" autoplay playsinline></video>
+        <button type="button" onclick="takePictureModal()">📸 Ambil Foto</button>
+        <canvas id="canvas-modal" style="display:none;"></canvas>
+      </div>
 
-    <!-- Upload -->
-    <div id="upload-section" style="display: none;">
-        <label for="imageFile">Unggah Gambar:</label>
-        <input type="file" id="imageFile" name="image" accept="image/*">
-    </div>
+      <!-- Upload -->
+      <div id="upload-section-modal" style="display:none;">
+        <input type="file" id="imageFile-modal" name="image" accept="image/*">
+      </div>
 
-    <button type="submit">Prediksi</button>
+      <button type="submit">Prediksi</button>
     </form>
+
+    <!-- HASIL PREDIKSI DARI MODAL -->
+    {% if result_modal and plant %}
+      <div id="modal-result" style="margin-top:15px;">
+        <h4>🔎 Hasil Prediksi untuk {{ plant|capitalize }}:</h4>
+        <p><strong>{{ result_modal }}</strong></p>
+      </div>
+    {% endif %}
   </div>
 </div>
 
+
+<!-- ==== JS UNTUK FORM UTAMA DAN MODAL ==== -->
 <script>
-let videoStream;
-let useCamera = false;
+// ===================== UTAMA =====================
+let videoStreamMain;
+function showCameraMain() {
+  document.getElementById('camera-section-main').style.display = 'block';
+  document.getElementById('upload-section-main').style.display = 'none';
+  document.getElementById('imageFile-main').required = false;
 
-function openModal(plant) {
-  document.getElementById('predictionModal').style.display = 'block';
-  document.getElementById('modal-title').innerText = 'Prediksi Penyakit ' + capitalize(plant);
-  document.getElementById('plant-type').value = plant;
-
-  // Default to upload mode
-  showUpload();
+  navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+    videoStreamMain = stream;
+    document.getElementById('video-main').srcObject = stream;
+  });
 }
+function showUploadMain() {
+  document.getElementById('camera-section-main').style.display = 'none';
+  document.getElementById('upload-section-main').style.display = 'block';
+  document.getElementById('imageFile-main').required = true;
 
-function closeModal() {
-  document.getElementById('predictionModal').style.display = 'none';
-  if (videoStream) {
-    videoStream.getTracks().forEach(track => track.stop());
-  }
+  if (videoStreamMain) videoStreamMain.getTracks().forEach(track => track.stop());
 }
-
-function capitalize(word) {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-}
-
-function showCamera() {
-  useCamera = true;
-  document.getElementById('camera-section').style.display = 'block';
-  document.getElementById('upload-section').style.display = 'none';
-
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then(stream => {
-      videoStream = stream;
-      document.getElementById('video').srcObject = stream;
-    })
-    .catch(err => {
-      alert('Kamera tidak tersedia: ' + err.message);
-    });
-}
-
-function showUpload() {
-  useCamera = false;
-  document.getElementById('camera-section').style.display = 'none';
-  document.getElementById('upload-section').style.display = 'block';
-
-  if (videoStream) {
-    videoStream.getTracks().forEach(track => track.stop());
-  }
-}
-
-function takePicture() {
-  const video = document.getElementById('video');
-  const canvas = document.getElementById('canvas');
-  const imageDataInput = document.getElementById('imageData');
-
+function takePictureMain() {
+  const canvas = document.getElementById('canvas-main');
+  const video = document.getElementById('video-main');
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
-  const context = canvas.getContext('2d');
-  context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-  const imageData = canvas.toDataURL('image/png');
-  imageDataInput.value = imageData;
-  alert('Gambar berhasil diambil. Silakan klik "Prediksi".');
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  document.getElementById('imageData-main').value = canvas.toDataURL('image/png');
 }
-
-function prepareImageData() {
-  if (useCamera) {
-    const imageData = document.getElementById('imageData').value;
-    if (!imageData) {
-      alert('Silakan ambil gambar terlebih dahulu.');
-      return false;
-    }
-    document.getElementById('imageFile').removeAttribute('name');
-  } else {
-    document.getElementById('imageData').removeAttribute('name');
+function prepareImageDataMain() {
+  const camera = document.getElementById('camera-section-main').style.display === 'block';
+  if (camera && !document.getElementById('imageData-main').value) {
+    alert('Silakan ambil gambar terlebih dahulu.');
+    return false;
   }
   return true;
 }
 
-// Close modal when clicking outside content
-window.onclick = function(event) {
-  const modal = document.getElementById('predictionModal');
-  if (event.target === modal) {
-    closeModal();
-  }
-};
+// ===================== MODAL =====================
+let videoStreamModal;
+let useCameraModal = false;
 
+function openModal(plant) {
+  document.getElementById('predictionModal').style.display = 'block';
+  document.getElementById('modal-title').innerText = 'Prediksi Penyakit ' + plant.charAt(0).toUpperCase() + plant.slice(1);
+  document.getElementById('plant-type').value = plant;
+  showUploadModal();
+}
+function closeModal() {
+  document.getElementById('predictionModal').style.display = 'none';
+  if (videoStreamModal) videoStreamModal.getTracks().forEach(track => track.stop());
+}
+function showCameraModal() {
+  useCameraModal = true;
+  document.getElementById('camera-section-modal').style.display = 'block';
+  document.getElementById('upload-section-modal').style.display = 'none';
+
+  navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+    videoStreamModal = stream;
+    document.getElementById('video-modal').srcObject = stream;
+  });
+}
+function showUploadModal() {
+  useCameraModal = false;
+  document.getElementById('camera-section-modal').style.display = 'none';
+  document.getElementById('upload-section-modal').style.display = 'block';
+  if (videoStreamModal) videoStreamModal.getTracks().forEach(track => track.stop());
+}
+function takePictureModal() {
+  const canvas = document.getElementById('canvas-modal');
+  const video = document.getElementById('video-modal');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  document.getElementById('imageData-modal').value = canvas.toDataURL('image/png');
+}
+function prepareImageDataModal() {
+  if (useCameraModal && !document.getElementById('imageData-modal').value) {
+    alert('Silakan ambil gambar terlebih dahulu.');
+    return false;
+  }
+  return true;
+}
+
+// Buka modal otomatis jika ada hasil
+{% if result_modal and plant %}
+  window.onload = function () {
+    openModal("{{ plant }}");
+  }
+{% endif %}
 </script>
+
 {% endblock %}
