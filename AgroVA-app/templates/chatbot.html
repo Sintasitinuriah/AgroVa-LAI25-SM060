@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Chatbot{% endblock %}
+{% block content %}
+<div class="main-container">
+    <!-- Sidebar Riwayat -->
+    <div class="sidebar">
+      <h3>Riwayat</h3>
+      <ul id="chat-history"></ul>
+    </div>
+
+    <!-- Chatbot Utama -->
+    <div class="chat-container">
+      <h2>🤖 AgroVA Chatbot</h2>
+      <div class="chat-box" id="chat-box">
+        <!-- Chat akan ditambahkan dengan JS -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Tulis pesan..." autofocus />
+        <button onclick="sendMessage()">Kirim</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function appendMessage(sender, text) {
+      const chatBox = document.getElementById('chat-box');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message ' + sender;
+      messageDiv.textContent = text;
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function addToHistory(question) {
+      const historyList = document.getElementById('chat-history');
+      const item = document.createElement('li');
+      item.textContent = question;
+      historyList.appendChild(item);
+    }
+
+    function sendMessage() {
+      const userInput = document.getElementById('user-input');
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      appendMessage('user', message);
+      addToHistory(message);
+      userInput.value = '';
+
+      fetch('/chatbot', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ message })
+      })
+      .then(res => res.json())
+      .then(data => {
+        appendMessage('bot', data.response);
+      });
+    }
+  </script>
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="main-dashboard">
+    <!-- Bagian Prediksi Cuaca -->
+    <section class="weather-section">
+      <h2>🌤 Prediksi Cuaca</h2>
+      <div class="weather-scroll-container">
+        <div class="weather-grid" id="weather-forecast">
+            <!-- JS akan inject data di sini -->
+        </div>
+    </div>
+    </section>
+
+    <!-- Bagian Card Penyakit Tanaman -->
+    <section class="disease-section">
+      <h2>🦠 Penyakit Umum Tanaman</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Padi</h3>
+          <p>Hawar daun, blast, busuk leher, dll.</p>
+        </div>
+        <div class="card">
+          <h3>Singkong</h3>
+          <p>Busuk batang, mosaic, bercak daun, dll.</p>
+        </div>
+        <div class="card">
+          <h3>Gandum</h3>
+          <p>Rust, bunt, septoria leaf blotch, dll.</p>
+        </div>
+        <div class="card">
+          <h3>Kentang</h3>
+          <p>Late blight, scab, virus Y, dll.</p>
+        </div>
+      </div>
+    </section>
+</main>
+
+<script>
+    // Simulasi data cuaca - kamu bisa ganti dengan API
+    const forecastData = [
+        { day: "Hari Ini", temp: "30°C", desc: "Cerah" },
+        { day: "Senin", temp: "28°C", desc: "Berawan" },
+        { day: "Selasa", temp: "29°C", desc: "Hujan ringan" },
+        { day: "Rabu", temp: "27°C", desc: "Hujan sedang" },
+        { day: "Kamis", temp: "30°C", desc: "Cerah" },
+        { day: "Jumat", temp: "31°C", desc: "Cerah Berawan" },
+        { day: "Sabtu", temp: "29°C", desc: "Gerimis" },
+        { day: "Minggu", temp: "28°C", desc: "Berawan" },
+    ];
+
+    const weatherContainer = document.getElementById("weather-forecast");
+    forecastData.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "weather-card";
+        div.innerHTML = `<strong>${item.day}</strong><p>${item.temp}</p><small>${item.desc}</small>`;
+        weatherContainer.appendChild(div);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}AgroVA{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="brand">🌾 AgroVA</a>
+            {% if session.get('user') %}
+                <div class="nav-links">
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="/predict">Prediksi Cuaca</a>
+                    <a href="/chat">Chatbot</a>
+                    <a href="/logout">Logout ({{ session['user'] }})</a>
+                </div>
+            {% else %}
+                <div class="nav-links">
+                    <a href="/">Login</a>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, msg in messages %}
+                <div class="alert alert-{{ category }}">{{ msg }}</div>
+            {% endfor %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+
+    <a href="/chat" class="chatbot-button" title="Buka Chatbot 🤖">
+    💬
+    </a>
+</body>
+</html>

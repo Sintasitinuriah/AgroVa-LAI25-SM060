@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>🧪 Prediksi Penyakit Tanaman</h2>
+<div class="prediction-card-grid">
+  <div class="prediction-card" onclick="openModal('padi')">
+    <h3>Padi</h3>
+    <p>Prediksi penyakit padi</p>
+  </div>
+  <div class="prediction-card" onclick="openModal('singkong')">
+    <h3>Singkong</h3>
+    <p>Prediksi penyakit singkong</p>
+  </div>
+  <div class="prediction-card" onclick="openModal('gandum')">
+    <h3>Gandum</h3>
+    <p>Prediksi penyakit gandum</p>
+  </div>
+  <div class="prediction-card" onclick="openModal('kentang')">
+    <h3>Kentang</h3>
+    <p>Prediksi penyakit kentang</p>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="predictionModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h3 id="modal-title">Prediksi</h3>
+
+    <!-- Tombol pilih mode -->
+    <div class="mode-toggle">
+    <button type="button" onclick="showUpload()">🗂 Upload</button>
+    <button type="button" onclick="showCamera()">📷 Kamera</button>
+    </div>
+
+    <!-- Form Prediksi -->
+    <form method="POST" enctype="multipart/form-data" action="/predict" onsubmit="return prepareImageData()">
+    <input type="hidden" name="plant" id="plant-type">
+
+    <!-- Kamera -->
+    <div id="camera-section" style="display: none;">
+        <video id="video" width="100%" autoplay playsinline></video>
+        <button type="button" onclick="takePicture()">📸 Ambil Foto</button>
+        <canvas id="canvas" style="display: none;"></canvas>
+        <input type="hidden" id="imageData" name="imageData">
+    </div>
+
+    <!-- Upload -->
+    <div id="upload-section" style="display: none;">
+        <label for="imageFile">Unggah Gambar:</label>
+        <input type="file" id="imageFile" name="image" accept="image/*">
+    </div>
+
+    <button type="submit">Prediksi</button>
+    </form>
+  </div>
+</div>
+
+<script>
+let videoStream;
+let useCamera = false;
+
+function openModal(plant) {
+  document.getElementById('predictionModal').style.display = 'block';
+  document.getElementById('modal-title').innerText = 'Prediksi Penyakit ' + capitalize(plant);
+  document.getElementById('plant-type').value = plant;
+
+  // Default to upload mode
+  showUpload();
+}
+
+function closeModal() {
+  document.getElementById('predictionModal').style.display = 'none';
+  if (videoStream) {
+    videoStream.getTracks().forEach(track => track.stop());
+  }
+}
+
+function capitalize(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function showCamera() {
+  useCamera = true;
+  document.getElementById('camera-section').style.display = 'block';
+  document.getElementById('upload-section').style.display = 'none';
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      videoStream = stream;
+      document.getElementById('video').srcObject = stream;
+    })
+    .catch(err => {
+      alert('Kamera tidak tersedia: ' + err.message);
+    });
+}
+
+function showUpload() {
+  useCamera = false;
+  document.getElementById('camera-section').style.display = 'none';
+  document.getElementById('upload-section').style.display = 'block';
+
+  if (videoStream) {
+    videoStream.getTracks().forEach(track => track.stop());
+  }
+}
+
+function takePicture() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const imageDataInput = document.getElementById('imageData');
+
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const context = canvas.getContext('2d');
+  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  const imageData = canvas.toDataURL('image/png');
+  imageDataInput.value = imageData;
+  alert('Gambar berhasil diambil. Silakan klik "Prediksi".');
+}
+
+function prepareImageData() {
+  if (useCamera) {
+    const imageData = document.getElementById('imageData').value;
+    if (!imageData) {
+      alert('Silakan ambil gambar terlebih dahulu.');
+      return false;
+    }
+    document.getElementById('imageFile').removeAttribute('name');
+  } else {
+    document.getElementById('imageData').removeAttribute('name');
+  }
+  return true;
+}
+
+// Close modal when clicking outside content
+window.onclick = function(event) {
+  const modal = document.getElementById('predictionModal');
+  if (event.target === modal) {
+    closeModal();
+  }
+};
+
+</script>
+{% endblock %}

@@ -1,0 +1,440 @@
+{
+  "intents": [
+    {
+      "intent": "basa_basi_awal",
+      "pattern":[
+        "Hai",
+        "Halo",
+        "Apa kabarmu?",
+        "Apakah ada orang di sana?",
+        "Halo",
+        "Selamat tinggal",
+        "Ada apa",
+        "Bagaimana kabarmu",
+        "heyy",
+        "whatsup",
+        "????????",
+        "Hey"
+      ],
+      "responses":[
+        "Halo!",
+        "Senang bertemu denganmu lagi!",
+        "Halo, bagaimana saya bisa membantu?"
+      ]
+    },
+    {
+      "intent": "basa_basi_akhir",
+      "pattern":[
+        "Cya",
+        "sampai jumpa",
+        "selamat tinggal",
+        "Sampai jumpa lagi",
+        "Selamat tinggal",
+        "Saya akan pergi",
+        "Selamat tinggal",
+        "Semoga harimu menyenangkan",
+        "Bicaralah denganmu nanti",
+        "ttyl",
+        "saya harus pergi",
+        "GTG",
+        "Bye",
+        "Dadah"
+      ],
+      "responses":[
+        "Sedih melihatmu pergi :(",
+        "Bicaralah denganmu nanti",
+        "Selamat tinggal!",
+        "Kembalilah segera"
+      ]
+    },
+    {
+      "intent": "basa_basi_tengah",
+      "pattern":[
+        "Mau nanya nih!",
+        "Aku pusing ada masalah, mau nanya boleh?"
+      ],
+      "responses":[
+        "Boleh dong tanyakan saja",
+        "Masalahnya apa nih, ayo tanyakan saja!"
+      ]
+    },
+    {
+      "intent": "tanya_penyakit_tanaman",
+      "pattern": [
+        "Apa saja penyakit yang menyerang padi?",
+        "Penyakit umum pada tanaman gandum apa?",
+        "Singkong bisa kena penyakit apa saja?",
+        "Kentang sering kena penyakit apa?",
+        "Penyakit yang sering muncul di padi apa ya?",
+        "Tanaman padi biasanya sakit apa?",
+        "Penyakit apa yang sering menyerang kentang?",
+        "Gandum bisa terkena penyakit apa?",
+        "Apa penyakit utama pada tanaman singkong?",
+        "Sebutkan penyakit yang umum menyerang kentang."
+      ],
+      "responses": [
+        "Beberapa penyakit yang umum menyerang {plant} antara lain: {disease_list}. Ingin saya jelaskan salah satunya?",
+        "Tanaman {plant} bisa terkena penyakit seperti {disease_list}. Mau info lebih lengkap tentang salah satunya?",
+        "Penyakit umum pada {plant} adalah {disease_list}. Silakan sebutkan salah satu jika ingin penjelasan lebih lanjut."
+      ],
+      "entities": ["plant", "disease_list"]
+    },
+    {
+      "intent": "tanya_gejala_penyakit",
+      "pattern": [
+        "Ciri-ciri penyakit blast pada padi apa?",
+        "Gejala karat daun di gandum gimana?",
+        "Bagaimana gejala mosaik pada singkong?",
+        "Apa saja tanda penyakit busuk daun kentang?",
+        "Kentang yang kena busuk daun itu cirinya apa?",
+        "Apa gejala awal dari penyakit hawar daun bakteri?",
+        "Singkong yang kena mosaik kelihatan seperti apa?",
+        "Gejala daun layu di tanaman padi apakah berbahaya?",
+        "Tanda-tanda penyakit tungro pada padi?",
+        "Bagaimana gejala bercak daun pada gandum?"
+      ],
+      "responses": [
+        "Gejala penyakit {disease} antara lain: {symptoms}. Apakah tanaman Anda menunjukkan gejala ini?",
+        "Tanda-tanda serangan {disease} biasanya meliputi: {symptoms}.",
+        "Penyakit {disease} memiliki gejala seperti: {symptoms}. Butuh bantuan untuk mengatasinya?"
+      ],
+      "entities": ["disease", "symptoms"]
+    },
+    {
+      "intent": "tanya_penyebab_penyakit",
+      "pattern": [
+        "Apa penyebab penyakit blast pada padi?",
+        "Tungro itu disebabkan oleh apa?",
+        "Apa penyebab busuk akar pada singkong?",
+        "Penyakit bercak daun pada gandum disebabkan apa?",
+        "Apa yang menyebabkan daun kentang muncul bercak?",
+        "Hawar daun bakteri disebabkan oleh bakteri apa?",
+        "Apa penyebab karat daun di gandum?",
+        "Singkong saya terkena mosaik, itu karena apa?",
+        "Penyebab layu bakteri pada tanaman padi?",
+        "Busuk daun pada kentang disebabkan oleh apa?"
+      ],
+      "responses": [
+        "Penyakit {disease} disebabkan oleh {pathogen}.",
+        "Penyebab utama dari {disease} adalah {pathogen}.",
+        "{disease} biasanya muncul akibat infeksi dari {pathogen}."
+      ],
+      "entities": ["disease", "pathogen"]
+    },
+    {
+      "intent": "tanya_pengendalian_penyakit",
+      "pattern": [
+        "Bagaimana cara mengatasi blast pada padi?",
+        "Apa solusi untuk mosaik pada singkong?",
+        "Obat untuk penyakit busuk daun di kentang?",
+        "Cara pengendalian karat daun gimana?",
+        "Apa yang bisa dilakukan untuk tungro?",
+        "Penyakit hawar daun bakteri bisa dikendalikan dengan apa?",
+        "Bagaimana mengatasi bercak coklat di daun gandum?",
+        "Cara mengobati busuk akar pada singkong?",
+        "Apa cara terbaik untuk mengendalikan layu bakteri?",
+        "Pengendalian busuk daun kentang seperti apa?"
+      ],
+      "responses": [
+        "Untuk mengendalikan {disease}, disarankan: {control}.",
+        "Pengendalian {disease} bisa dilakukan dengan cara: {control}.",
+        "Anda bisa mengatasi {disease} dengan: {control}. Selalu perhatikan kondisi lingkungan tanaman."
+      ],
+      "entities": ["disease", "control"]
+    },
+    {
+      "intent": "tanya_pengertian_penyakit",
+      "pattern": [
+        "Apa itu penyakit blast?",
+        "Jelaskan penyakit tungro pada padi.",
+        "Pengertian mosaik pada singkong apa?",
+        "Apa maksud dari hawar daun bakteri?",
+        "Definisi karat daun pada gandum?",
+        "Penyakit busuk daun kentang itu apa?",
+        "Apa itu bercak daun pada tanaman gandum?",
+        "Busuk akar singkong itu seperti apa?",
+        "Jelaskan tentang layu bakteri pada padi.",
+        "Apa itu penyakit bunt gandum?"
+      ],
+      "responses": [
+        "{disease} adalah penyakit yang menyerang tanaman {plant} yang disebabkan oleh {pathogen}.",
+        "Penyakit {disease} merupakan infeksi yang menyebabkan {symptoms} pada tanaman.",
+        "{disease} pada {plant} biasanya ditandai dengan {symptoms} dan bisa menyebabkan kerusakan serius."
+      ],
+      "entities": ["disease", "plant", "pathogen", "symptoms"]
+    },
+    {
+      "intent": "tanya_pencegahan_penyakit",
+      "pattern": [
+        "Bagaimana cara mencegah blast pada padi?",
+        "Apa pencegahan penyakit tungro?",
+        "Langkah pencegahan mosaik pada singkong?",
+        "Cara mencegah karat daun di gandum?",
+        "Bagaimana pencegahan busuk daun kentang?",
+        "Langkah mencegah hawar daun bakteri?",
+        "Pencegahan bercak daun pada gandum gimana?",
+        "Bagaimana cara mencegah busuk akar singkong?",
+        "Cara mencegah layu bakteri di padi?",
+        "Pencegahan penyakit bunt gandum?"
+      ],
+      "responses": [
+        "Pencegahan {disease} dapat dilakukan dengan {control}.",
+        "Untuk mencegah {disease}, disarankan: {control}.",
+        "Cara pencegahan {disease} adalah dengan {control}."
+      ],
+      "entities": ["disease", "control"]
+    },
+    {
+      "intent": "tanya_penyakit_berdasarkan_gejala",
+      "pattern": [
+        "Penyakit apa yang ditandai dengan daun menguning dan bercak abu-abu?",
+        "Gejala daun layu dan bercak coklat itu penyakit apa?",
+        "Daun kentang yang busuk itu biasanya penyakit apa?",
+        "Penyakit dengan gejala bercak oranye di daun gandum?",
+        "Tanda-tanda mosaik pada singkong itu penyakit apa?",
+        "Penyakit yang menyebabkan pertumbuhan tanaman terhambat?",
+        "Gejala bercak coklat di daun padi itu apa?",
+        "Daun padi menguning itu tanda penyakit apa?",
+        "Busuk akar pada singkong ditandai dengan gejala apa?",
+        "Penyakit dengan bercak hitam di daun kentang?"
+      ],
+      "responses": [
+        "Berdasarkan gejala tersebut, kemungkinan penyakitnya adalah {disease}.",
+        "Gejala yang Anda sebutkan biasanya terkait dengan penyakit {disease}.",
+        "Penyakit yang cocok dengan gejala itu adalah {disease}."
+      ],
+      "entities": ["disease"]
+    },
+    {
+      "intent": "tanya_waktu_serangan_penyakit",
+      "pattern": [
+        "Kapan waktu serangan blast pada padi paling tinggi?",
+        "Musim apa penyakit tungro biasanya menyerang?",
+        "Waktu terbaik untuk waspada mosaik singkong?",
+        "Kapan karat daun di gandum sering muncul?",
+        "Musim serangan busuk daun kentang?",
+        "Waktu serangan hawar daun bakteri?",
+        "Kapan bercak daun biasanya muncul di gandum?",
+        "Musim layu bakteri pada padi kapan?",
+        "Waktu munculnya busuk akar singkong?",
+        "Kapan bunt gandum biasanya menyerang?"
+      ],
+      "responses": [
+        "Penyakit {disease} biasanya menyerang pada musim {season}.",
+        "Waktu serangan {disease} yang paling tinggi adalah saat {season}.",
+        "{disease} umumnya muncul pada musim {season}."
+      ],
+      "entities": ["disease", "season"]
+    },
+    {
+      "intent": "tanya_dampak_penyakit",
+      "pattern": [
+        "Apa dampak penyakit blast pada padi?",
+        "Bagaimana efek tungro terhadap tanaman?",
+        "Dampak mosaik pada singkong seperti apa?",
+        "Apa akibat karat daun pada gandum?",
+        "Dampak busuk daun kentang pada hasil panen?",
+        "Efek hawar daun bakteri pada padi?",
+        "Dampak bercak daun pada gandum?",
+        "Bagaimana busuk akar mempengaruhi singkong?",
+        "Akibat layu bakteri pada tanaman padi?",
+        "Apa dampak bunt gandum?"
+      ],
+      "responses": [
+        "Penyakit {disease} dapat menyebabkan {impact}.",
+        "Dampak dari {disease} biasanya berupa {impact}.",
+        "Akibat {disease} adalah {impact} yang dapat menurunkan hasil panen."
+      ],
+      "entities": ["disease", "impact"]
+    },
+    {
+      "intent": "tanya_pengobatan_alami",
+      "pattern": [
+        "Adakah pengobatan alami untuk blast pada padi?",
+        "Cara alami mengatasi mosaik pada singkong?",
+        "Obat herbal untuk busuk daun kentang?",
+        "Pengobatan alami untuk karat daun gandum?",
+        "Bagaimana mengobati tungro secara alami?",
+        "Obat alami untuk hawar daun bakteri?",
+        "Pengobatan alami bercak daun pada gandum?",
+        "Cara alami mengatasi busuk akar singkong?",
+        "Obat alami layu bakteri di padi?",
+        "Pengobatan alami bunt gandum?"
+      ],
+      "responses": [
+        "Pengobatan alami untuk {disease} meliputi {natural_treatment}.",
+        "Anda bisa mencoba pengobatan alami seperti {natural_treatment} untuk {disease}.",
+        "Metode alami untuk mengatasi {disease} adalah dengan {natural_treatment}."
+      ],
+      "entities": ["disease", "natural_treatment"]
+    },
+    {
+      "intent": "tanya_jenis_penyakit",
+      "pattern": [
+        "Apa saja jenis penyakit pada padi?",
+        "Jenis penyakit yang menyerang gandum apa saja?",
+        "Singkong punya penyakit apa saja?",
+        "Kentang sering kena penyakit apa saja?",
+        "Sebutkan jenis penyakit pada tanaman padi.",
+        "Jenis penyakit umum di gandum?",
+        "Penyakit apa yang biasa menyerang singkong?",
+        "Jenis penyakit yang sering muncul di kentang?",
+        "Apa jenis penyakit bawaan pada padi?",
+        "Penyakit kronis pada gandum apa saja?"
+      ],
+      "responses": [
+        "Jenis penyakit pada {plant} antara lain: {disease_list}.",
+        "Beberapa jenis penyakit yang menyerang {plant} adalah {disease_list}.",
+        "Penyakit yang biasa ditemukan pada {plant} meliputi {disease_list}."
+      ],
+      "entities": ["plant", "disease_list"]
+    },
+    {
+      "intent": "tanya_cara_pencegahan_umum",
+      "pattern": [
+        "Bagaimana cara pencegahan penyakit tanaman secara umum?",
+        "Apa langkah pencegahan umum untuk penyakit tanaman?",
+        "Cara menghindari penyakit pada tanaman secara umum?",
+        "Bagaimana cara menjaga tanaman dari penyakit?",
+        "Langkah pencegahan penyakit tanaman secara umum?",
+        "Apa saja cara umum mencegah penyakit tanaman?",
+        "Bagaimana menjaga tanaman agar tidak sakit?",
+        "Cara preventif untuk penyakit tanaman?",
+        "Langkah terbaik untuk mencegah penyakit tanaman?",
+        "Tips pencegahan penyakit pada tanaman secara umum?"
+      ],
+      "responses": [
+        "Pencegahan penyakit tanaman secara umum meliputi menjaga kebersihan, rotasi tanaman, dan penggunaan bibit sehat.",
+        "Beberapa cara umum untuk mencegah penyakit tanaman adalah sanitasi kebun, pengaturan jarak tanam, dan pemupukan yang tepat.",
+        "Untuk mencegah penyakit, penting menjaga kondisi lingkungan tanaman tetap sehat dan menghindari kelembapan berlebih."
+      ],
+      "entities": []
+    },
+    {
+      "intent": "tanya_waktu_perawatan",
+      "pattern": [
+        "Kapan waktu terbaik merawat tanaman padi agar tidak sakit?",
+        "Waktu ideal perawatan gandum agar bebas penyakit?",
+        "Kapan harus melakukan perawatan singkong untuk mencegah penyakit?",
+        "Waktu perawatan kentang supaya tanaman sehat?",
+        "Kapan waktu penyemprotan obat pada padi?",
+        "Waktu terbaik pemupukan gandum untuk mencegah penyakit?",
+        "Kapan harus melakukan perawatan daun singkong?",
+        "Waktu perawatan akar kentang yang efektif?",
+        "Kapan sebaiknya perawatan rutin pada tanaman padi?",
+        "Waktu terbaik untuk mengendalikan penyakit kentang?"
+      ],
+      "responses": [
+        "Waktu terbaik perawatan {plant} adalah pada fase {growth_stage} untuk mencegah penyakit.",
+        "Perawatan {plant} yang efektif dilakukan saat {growth_stage} dan menjelang musim hujan.",
+        "Untuk mencegah penyakit, perawatan {plant} sebaiknya dilakukan pada {growth_stage}."
+      ],
+      "entities": ["plant", "growth_stage"]
+    },
+    {
+      "intent": "tanya_sumber_informasi",
+      "pattern": [
+        "Di mana saya bisa mendapatkan informasi tentang penyakit tanaman?",
+        "Sumber terpercaya untuk belajar penyakit tanaman padi?",
+        "Referensi terbaik tentang penyakit gandum?",
+        "Website yang membahas penyakit singkong?",
+        "Buku rekomendasi tentang penyakit kentang?",
+        "Sumber belajar penyakit tanaman yang bagus?",
+        "Dimana bisa belajar pengendalian penyakit tanaman?",
+        "Website terpercaya soal penyakit tanaman?",
+        "Sumber data penyakit tanaman padi dan gandum?",
+        "Referensi online penyakit singkong dan kentang?"
+      ],
+      "responses": [
+        "Anda bisa mencari informasi di situs resmi pertanian seperti Balai Besar Litbang Pertanian atau jurnal ilmiah terkait.",
+        "Website seperti FAO, atau jurnal tanaman lokal merupakan sumber yang baik untuk informasi penyakit tanaman.",
+        "Buku teks tentang fitopatologi dan situs pemerintah pertanian bisa dijadikan referensi."
+      ],
+      "entities": []
+    },
+    {
+      "intent": "tanya_efek_samping_pengobatan",
+      "pattern": [
+        "Apakah ada efek samping obat untuk penyakit blast?",
+        "Efek samping penggunaan pestisida untuk tungro?",
+        "Obat untuk mosaik singkong ada efek sampingnya?",
+        "Efek negatif pengobatan busuk daun kentang?",
+        "Pengobatan karat daun gandum punya efek samping?",
+        "Apa efek samping dari obat hawar daun bakteri?",
+        "Obat bercak daun gandum ada efek samping?",
+        "Efek samping obat busuk akar singkong?",
+        "Obat layu bakteri di padi aman tidak?",
+        "Efek samping pengobatan bunt gandum?"
+      ],
+      "responses": [
+        "Beberapa obat dapat menimbulkan efek samping seperti {side_effects}. Disarankan mengikuti dosis yang dianjurkan.",
+        "Efek samping penggunaan obat untuk {disease} bisa berupa {side_effects}. Gunakan dengan hati-hati.",
+        "Penggunaan pestisida harus sesuai anjuran karena efek sampingnya bisa termasuk {side_effects}."
+      ],
+      "entities": ["disease", "side_effects"]
+    },
+    {
+      "intent": "tanya_penyakit_langka",
+      "pattern": [
+        "Apa saja penyakit langka pada padi?",
+        "Penyakit langka di tanaman gandum apa?",
+        "Singkong punya penyakit langka?",
+        "Kentang pernah kena penyakit langka?",
+        "Sebutkan penyakit langka pada tanaman padi.",
+        "Jenis penyakit langka di gandum?",
+        "Penyakit langka apa yang menyerang singkong?",
+        "Kentang ada penyakit langka tidak?",
+        "Penyakit langka yang pernah ditemukan di padi?",
+        "Jenis penyakit langka pada kentang?"
+      ],
+      "responses": [
+        "Beberapa penyakit langka pada {plant} antara lain: {rare_disease_list}.",
+        "Penyakit langka yang ditemukan pada {plant} adalah {rare_disease_list}.",
+        "Meski jarang, {plant} juga bisa terkena penyakit seperti {rare_disease_list}."
+      ],
+      "entities": ["plant", "rare_disease_list"]
+    },
+    {
+      "intent": "tanya_pengaruh_cuaca",
+      "pattern": [
+        "Bagaimana cuaca mempengaruhi penyakit blast?",
+        "Pengaruh musim hujan terhadap tungro?",
+        "Cuaca panas berpengaruh ke mosaik singkong?",
+        "Apakah karat daun gandum dipengaruhi cuaca?",
+        "Pengaruh kelembapan terhadap busuk daun kentang?",
+        "Cuaca dingin berpengaruh pada hawar daun bakteri?",
+        "Bagaimana cuaca mempengaruhi bercak daun gandum?",
+        "Apakah layu bakteri padi tergantung cuaca?",
+        "Pengaruh musim terhadap busuk akar singkong?",
+        "Cuaca kering berpengaruh pada bunt gandum?"
+      ],
+      "responses": [
+        "Cuaca {weather_condition} dapat mempercepat/memperlambat perkembangan {disease}.",
+        "Penyakit {disease} sering muncul saat cuaca {weather_condition}.",
+        "Kondisi cuaca {weather_condition} mempengaruhi tingkat serangan {disease}."
+      ],
+      "entities": ["disease", "weather_condition"]
+    },
+    {
+      "intent": "tanya_rekomendasi_varietas",
+      "pattern": [
+        "Varietas padi tahan blast apa saja?",
+        "Gandum yang tahan karat daun?",
+        "Varietas singkong tahan mosaik?",
+        "Kentang tahan busuk akar yang mana?",
+        "Rekomendasi varietas padi tahan penyakit?",
+        "Varietas gandum yang kuat terhadap bercak daun?",
+        "Singkong varietas tahan penyakit mosaik?",
+        "Kentang varietas tahan hawar daun?",
+        "Varietas padi yang tahan tungro?",
+        "Gandum varietas tahan penyakit bunt?"
+      ],
+      "responses": [
+        "Varietas {plant} yang tahan terhadap {disease} antara lain: {varieties}.",
+        "Beberapa varietas {plant} tahan penyakit {disease} adalah {varieties}.",
+        "Rekomendasi varietas {plant} tahan {disease}: {varieties}."
+      ],
+      "entities": ["plant", "disease", "varieties"]
+    }
+  ]
+}
