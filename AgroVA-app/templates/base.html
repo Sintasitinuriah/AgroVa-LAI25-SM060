@@ -9,11 +9,12 @@
 
     <nav class="navbar">
         <div class="nav-container">
-            <a href="/" class="brand">🌾 AgroVA</a>
+            <a href="/dashboard" class="brand">🌾 AgroVA</a>
+            <button class="hamburger" onclick="toggleMenu()">☰</button>
             {% if session.get('user') %}
-                <div class="nav-links">
+                <div class="nav-links" id="navLinks">
                     <a href="/dashboard">Dashboard</a>
-                    <a href="/predict">Prediksi Cuaca</a>
+                    <a href="/predict">Prediksi Tanaman</a>
                     <a href="/chat">Chatbot</a>
                     <a href="/logout">Logout ({{ session['user'] }})</a>
                 </div>
@@ -38,4 +39,11 @@
     💬
     </a>
 </body>
+<script>
+function toggleMenu() {
+  const nav = document.getElementById('navLinks');
+  nav.classList.toggle('show');
+}
+</script>
+
 </html>
