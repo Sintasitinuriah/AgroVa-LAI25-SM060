@@ -14,7 +14,7 @@ import io
 app = Flask(__name__)
 
 app.secret_key = 'supersecretkey'
-interpreter = tf.lite.Interpreter(model_path="C:/Users/Sinta/Documents/Larskar AI/Capstone/klasifikasi gambar/model/tflite_model/converted_model.tflite")
+interpreter = tf.lite.Interpreter(model_path="../klasifikasi gambar/model/tflite_model/converted_model.tflite")
 interpreter.allocate_tensors()
 
 input_details = interpreter.get_input_details()
@@ -44,6 +44,35 @@ label_map = [
     'singkong_Healthy',
 ]
 
+model_map = {
+    'padi': {
+        'model': tf.lite.Interpreter(model_path='models/predict_model_disease_rice.tflite'),
+        'labels': ['Bacterialblight', 'Blast', 'Brownspot', 'Tungro']
+    },
+    'kentang': {
+        'model': tf.lite.Interpreter(model_path='models/predict_model_disease_potato.tflite'),
+        'labels': ['Early_Blight', 'Healthy', 'Late_Blight']
+    },
+    'gandum': {
+        'model': tf.lite.Interpreter(model_path='models/predict_model_disease_wheat.tflite'),
+        'labels': [
+            'aphid', 'black_rust', 'blast', 'brown_rust', 'common_root_rot',
+            'fusarium_head_blight', 'healthy', 'leaf_blight', 'mildew', 'mite',
+            'septoria', 'smut', 'stem_fly', 'tan_spot', 'yellow_rust'
+        ]
+    },
+    'singkong': {
+        'model': tf.lite.Interpreter(model_path='models/predict_model_disease_cassava.tflite'),
+        'labels': [
+            'Cassava__bacterial_blight', 'Cassava__brown_streak_disease',
+            'Cassava__green_mottle', 'Cassava__healthy', 'Cassava__mosaic_disease'
+        ]
+    }
+}
+
+for entry in model_map.values():
+    entry['model'].allocate_tensors()
+
 
 # Register blueprints
 app.register_blueprint(auth_bp)
@@ -62,6 +91,17 @@ def predict_image(image):
     interpreter.invoke()
     output_data = interpreter.get_tensor(output_details[0]['index'])
     return output_data[0]
+
+def predict_with_tflite(interpreter, image_array):
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+
+    input_data = np.expand_dims(image_array.astype(np.float32), axis=0)
+    interpreter.set_tensor(input_details[0]['index'], input_data)
+    interpreter.invoke()
+
+    output_data = interpreter.get_tensor(output_details[0]['index'])
+    return output_data
 
 @app.route('/')
 def index():
@@ -91,6 +131,48 @@ def predict():
 
     return render_template('weather.html', result=result)
 
+@app.route('/predict-plant', methods=['POST'])
+def predict_model():
+    plant = request.form.get('plant')
+    result_modal = None
+    image = None
+
+    if not plant or plant not in model_map:
+        return render_template('weather.html', result_modal='Tanaman tidak dikenali.', plant=plant)
+
+    # Ambil data gambar
+    if 'imageData' in request.form and request.form['imageData']:
+        image_data = request.form['imageData'].split(',')[1]
+        image = Image.open(io.BytesIO(base64.b64decode(image_data))).convert('RGB')
+    elif 'image' in request.files:
+        image = Image.open(request.files['image'].stream).convert('RGB')
+
+    if image:
+        model_info = model_map[plant]
+        interpreter = model_info['model']
+        label_map = model_info['labels']
+
+        # ==== PREPROCESS ====
+        input_details = interpreter.get_input_details()
+        output_details = interpreter.get_output_details()
+
+        input_shape = input_details[0]['shape'][1:3]  # (height, width)
+        img = image.resize(input_shape)
+        img_array = np.array(img).astype(np.float32) / 255.0
+        input_data = np.expand_dims(img_array, axis=0)
+
+        # ==== PREDIKSI ====
+        interpreter.set_tensor(input_details[0]['index'], input_data)
+        interpreter.invoke()
+        output_data = interpreter.get_tensor(output_details[0]['index'])[0]
+
+        predicted_index = np.argmax(output_data)
+        predicted_label = label_map[predicted_index]
+
+        # Format hasil akhir
+        result_modal = predicted_label.replace('_', ' ').replace('Cassava__', '').capitalize()
+
+    return render_template('weather.html', result_modal=result_modal, plant=plant)
 
 @app.route('/dashboard')
 def dashboard():

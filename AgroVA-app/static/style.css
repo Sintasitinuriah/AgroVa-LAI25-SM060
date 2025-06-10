@@ -56,16 +56,19 @@ body {
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   width: 320px;
-  margin: 100px auto 0;
+  margin: 150px auto 0;
   text-align: center;
 }
+
 input {
-  width: 90%;
+  width: 100%;
   padding: 10px;
-  margin: 10px 0;
+  margin: 0 0 4px 0;
   border-radius: 6px;
   border: 1px solid #ccc;
+  display: block; 
 }
+
 button {
   padding: 10px 20px;
   background: #004d40;
@@ -75,9 +78,11 @@ button {
   cursor: pointer;
   transition: background 0.3s ease;
 }
+
 button:hover {
   background: #00796b;
 }
+
 
 /* Alert */
 .alert {
@@ -321,6 +326,18 @@ form {
   color: white;
   cursor: pointer;
 }
+
+.form-container {
+  max-width: 600px;
+  margin: 80px auto;
+  padding: 10px;
+  border-radius: 12px;
+}
+
+h2 {
+  text-align: center;
+}
+
 /* RESPONSIVE */
 @media (max-width: 992px) {
   .navbar {

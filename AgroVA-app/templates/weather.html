@@ -2,30 +2,32 @@
 {% block content %}
 
 <!-- ==== FORM UTAMA (1 Model) ==== -->
-<h2>📷 Prediksi Penyakit Umum</h2>
-<form method="POST" action="/predict-main" enctype="multipart/form-data" onsubmit="return prepareImageDataMain()">
-  <input type="hidden" id="imageData-main" name="imageData">
+<div class="form-container">
+  <h2>📷 Prediksi Penyakit Umum</h2>
+  <form method="POST" action="/predict-main" enctype="multipart/form-data" onsubmit="return prepareImageDataMain()">
+    <input type="hidden" id="imageData-main" name="imageData">
 
-  <!-- Kamera -->
-  <div style="margin-bottom: 10px;">
-    <button type="button" onclick="showCameraMain()">🎥 Buka Kamera</button>
-    <div id="camera-section-main" style="display:none;">
-      <video id="video-main" width="100%" autoplay playsinline></video>
-      <button type="button" onclick="takePictureMain()">📸 Ambil Foto</button>
-      <canvas id="canvas-main" style="display:none;"></canvas>
+    <!-- Kamera -->
+    <div style="margin-bottom: 10px;">
+      <button type="button" onclick="showCameraMain()">🎥 Buka Kamera</button>
+      <div id="camera-section-main" style="display:none;">
+        <video id="video-main" width="100%" autoplay playsinline></video>
+        <button type="button" onclick="takePictureMain()">📸 Ambil Foto</button>
+        <canvas id="canvas-main" style="display:none;"></canvas>
+      </div>
     </div>
-  </div>
 
-  <!-- Upload -->
-  <div style="margin-bottom: 10px;">
-    <button type="button" onclick="showUploadMain()">📁 Unggah Gambar</button>
-    <div id="upload-section-main" style="display:none;">
-      <input type="file" id="imageFile-main" name="image" accept="image/*">
+    <!-- Upload -->
+    <div style="margin-bottom: 10px;">
+      <button type="button" onclick="showUploadMain()">📁 Unggah Gambar</button>
+      <div id="upload-section-main" style="display:none;">
+        <input type="file" id="imageFile-main" name="image" accept="image/*">
+      </div>
     </div>
-  </div>
 
-  <button type="submit">🔍 Prediksi</button>
-</form>
+    <button type="submit">🔍 Prediksi</button>
+  </form>
+</div>
 
 <!-- Hasil prediksi dari form utama -->
 {% if result %}
