@@ -5,9 +5,13 @@ from string import Formatter
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Load intents
-with open(r'intents.json', 'r', encoding='utf-8') as f:
-    data = json.load(f)
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+intents_path = os.path.join(BASE_DIR, 'intents.json')
+
+with open(intents_path, 'r', encoding='utf-8') as f:
+    intents = json.load(f)
 
 # Data tanaman dan penyakit
 plant_data = {
