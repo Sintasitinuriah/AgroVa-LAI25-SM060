@@ -14,6 +14,7 @@
         <video id="video-main" width="100%" autoplay playsinline></video>
         <button type="button" onclick="takePictureMain()">📸 Ambil Foto</button>
         <canvas id="canvas-main" style="display:none;"></canvas>
+        <img id="photo-preview-main" style="max-width: 100%; margin-top: 10px; display:none;" alt="Hasil Foto">
       </div>
     </div>
 
@@ -40,10 +41,10 @@
 <!-- ==== PILIH TANAMAN ==== -->
 <h2>🧪 Prediksi Penyakit Tanaman Spesifik</h2>
 <div class="prediction-card-grid">
-  <div class="prediction-card" onclick="openModal('padi')"><h3>Padi</h3><p>Prediksi penyakit padi</p></div>
-  <div class="prediction-card" onclick="openModal('singkong')"><h3>Singkong</h3><p>Prediksi penyakit singkong</p></div>
-  <div class="prediction-card" onclick="openModal('gandum')"><h3>Gandum</h3><p>Prediksi penyakit gandum</p></div>
-  <div class="prediction-card" onclick="openModal('kentang')"><h3>Kentang</h3><p>Prediksi penyakit kentang</p></div>
+  <div class="prediction-card" onclick="openModal('padi')"><img src="static/assets/Padi.jpg" alt="Padi"><p>Prediksi penyakit padi</p></div>
+  <div class="prediction-card" onclick="openModal('singkong')"><img src="static/assets/Daung_singkong.jpg" alt="Singkong"><p>Prediksi penyakit singkong</p></div>
+  <div class="prediction-card" onclick="openModal('gandum')"><img src="static/assets/Gandum.jpg" alt="Gandum"><p>Prediksi penyakit gandum</p></div>
+  <div class="prediction-card" onclick="openModal('kentang')"><img src="static/assets/Daun_kentang.jpg" alt="Kentang"><p>Prediksi penyakit kentang</p></div>
 </div>
 
 <!-- ==== MODAL UNTUK PREDIKSI KHUSUS ==== -->
@@ -67,6 +68,8 @@
         <video id="video-modal" width="100%" autoplay playsinline></video>
         <button type="button" onclick="takePictureModal()">📸 Ambil Foto</button>
         <canvas id="canvas-modal" style="display:none;"></canvas>
+        <img id="photo-preview-modal" style="max-width: 100%; margin-top: 10px; display:none;" alt="Hasil Foto">
+
       </div>
 
       <!-- Upload -->
@@ -97,11 +100,16 @@ function showCameraMain() {
   document.getElementById('upload-section-main').style.display = 'none';
   document.getElementById('imageFile-main').required = false;
 
+  // Reset tampilan
+  document.getElementById('video-main').style.display = 'block';
+  document.getElementById('photo-preview-main').style.display = 'none';
+
   navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
     videoStreamMain = stream;
     document.getElementById('video-main').srcObject = stream;
   });
 }
+
 function showUploadMain() {
   document.getElementById('camera-section-main').style.display = 'none';
   document.getElementById('upload-section-main').style.display = 'block';
@@ -112,10 +120,26 @@ function showUploadMain() {
 function takePictureMain() {
   const canvas = document.getElementById('canvas-main');
   const video = document.getElementById('video-main');
+  const img = document.getElementById('photo-preview-main');
+
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
-  canvas.getContext('2d').drawImage(video, 0, 0);
-  document.getElementById('imageData-main').value = canvas.toDataURL('image/png');
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  // Ambil data gambar
+  const dataUrl = canvas.toDataURL('image/png');
+  document.getElementById('imageData-main').value = dataUrl;
+
+  // Tampilkan hasil gambar dan sembunyikan video
+  img.src = dataUrl;
+  img.style.display = 'block';
+  video.style.display = 'none';
+
+  // Stop video stream agar kamera mati
+  if (videoStreamMain) {
+    videoStreamMain.getTracks().forEach(track => track.stop());
+    videoStreamMain = null;
+  }
 }
 function prepareImageDataMain() {
   const camera = document.getElementById('camera-section-main').style.display === 'block';
@@ -145,11 +169,16 @@ function showCameraModal() {
   document.getElementById('camera-section-modal').style.display = 'block';
   document.getElementById('upload-section-modal').style.display = 'none';
 
+  // Reset tampilan kamera dan preview
+  document.getElementById('video-modal').style.display = 'block';
+  document.getElementById('photo-preview-modal').style.display = 'none';
+
   navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
     videoStreamModal = stream;
     document.getElementById('video-modal').srcObject = stream;
   });
 }
+
 function showUploadModal() {
   useCameraModal = false;
   document.getElementById('camera-section-modal').style.display = 'none';
@@ -159,11 +188,27 @@ function showUploadModal() {
 function takePictureModal() {
   const canvas = document.getElementById('canvas-modal');
   const video = document.getElementById('video-modal');
+  const img = document.getElementById('photo-preview-modal');
+
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
-  canvas.getContext('2d').drawImage(video, 0, 0);
-  document.getElementById('imageData-modal').value = canvas.toDataURL('image/png');
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  const dataUrl = canvas.toDataURL('image/png');
+  document.getElementById('imageData-modal').value = dataUrl;
+
+  // Tampilkan hasil gambar dan sembunyikan video
+  img.src = dataUrl;
+  img.style.display = 'block';
+  video.style.display = 'none';
+
+  // Matikan kamera
+  if (videoStreamModal) {
+    videoStreamModal.getTracks().forEach(track => track.stop());
+    videoStreamModal = null;
+  }
 }
+
 function prepareImageDataModal() {
   if (useCameraModal && !document.getElementById('imageData-modal').value) {
     alert('Silakan ambil gambar terlebih dahulu.');

@@ -9,8 +9,8 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="/dashboard" class="brand">🌾 AgroVA</a>
-            <button class="hamburger" onclick="toggleMenu()">☰</button>
             {% if session.get('user') %}
+            <button class="hamburger" onclick="toggleMenu()">☰</button>
                 <div class="nav-links" id="navLinks">
                     <a href="/dashboard">Dashboard</a>
                     <a href="/predict-main">Prediksi Tanaman</a>
@@ -18,9 +18,9 @@
                     <a href="/logout">Logout ({{ session['user'] }})</a>
                 </div>
             {% else %}
-                <div class="nav-links">
+                <!-- <div class="nav-links">
                     <a href="/">Login</a>
-                </div>
+                </div> -->
             {% endif %}
         </div>
     </nav>

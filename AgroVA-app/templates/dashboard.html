@@ -15,9 +15,18 @@
       <h2>🌤 Prediksi Cuaca</h2>
       <div class="weather-scroll-container">
         <div class="weather-grid" id="weather-forecast">
-            <!-- JS akan inject data di sini -->
+          {% if prediksi %}
+            {% for item in prediksi %}
+            <div class="weather-card">
+              <h3>Hari ke-{{ item.day }}</h3>
+              <p>Suhu: {{ item.temperature }} °C</p>
+            </div>
+            {% endfor %}
+          {% else %}
+            <p>Data prediksi cuaca belum tersedia.</p>
+          {% endif %}
         </div>
-    </div>
+      </div>
     </section>
 
     <section class="disease-section">
@@ -37,7 +46,9 @@
                 <li>Hawar Daun</li>
                 <li>Blast</li>
                 <li>Busuk Leher</li>
+                <li>Tungro</li>
               </ul>
+              <a href="/predict-main" class="predict-button">Prediksi</a>
             </div>
           </div>
         </div>
@@ -52,10 +63,13 @@
             <div class="flip-card-back">
               <h3>Penyakit Singkong</h3>
               <ul>
-                <li>Busuk Batang</li>
-                <li>Mosaic</li>
-                <li>Bercak Daun</li>
+                <li>Hawar bakteri pada singkong</li>
+                <li>Penyakit garis coklat pada singkong</li>
+                <li>Singkong bercak hijau</li>
+                <li>Sehat</li>
+                <li>Penyakit mosaik pada singkong</li>
               </ul>
+              <a href="/predict-main" class="predict-button">Prediksi</a>
             </div>
           </div>
         </div>
@@ -70,10 +84,23 @@
             <div class="flip-card-back">
               <h3>Penyakit Gandum</h3>
               <ul>
-                <li>Rust</li>
-                <li>Bunt</li>
-                <li>Septoria Leaf Blotch</li>
+                <li>Aphid (Kutu Daun)</li>
+                <li>Karat hitam</li>
+                <li>Ledakan</li>
+                <li>Karat coklat</li>
+                <li>Busuk akar umum</li>
+                <li>Fusarium pada bulir</li>
+                <li>Sehat</li>
+                <li>Hawar daun</li>
+                <li>Embun tepung</li>
+                <li>Tungau</li>
+                <li>Septoria</li>
+                <li>Kotoran hitam (Smut)</li>
+                <li>Lalat batang</li>
+                <li>Bercak coklat (Tan Spot)</li>
+                <li>Karat kuning</li>
               </ul>
+              <a href="/predict-main" class="predict-button">Prediksi</a>
             </div>
           </div>
         </div>
@@ -92,6 +119,7 @@
                 <li>Scab</li>
                 <li>Virus Y</li>
               </ul>
+              <a href="/predict-main" class="predict-button">Prediksi</a>
             </div>
           </div>
         </div>
@@ -102,26 +130,6 @@
 </main>
 
 <script>
-    // Simulasi data cuaca - kamu bisa ganti dengan API
-    const forecastData = [
-        { day: "Hari Ini", temp: "30°C", desc: "Cerah" },
-        { day: "Senin", temp: "28°C", desc: "Berawan" },
-        { day: "Selasa", temp: "29°C", desc: "Hujan ringan" },
-        { day: "Rabu", temp: "27°C", desc: "Hujan sedang" },
-        { day: "Kamis", temp: "30°C", desc: "Cerah" },
-        { day: "Jumat", temp: "31°C", desc: "Cerah Berawan" },
-        { day: "Sabtu", temp: "29°C", desc: "Gerimis" },
-        { day: "Minggu", temp: "28°C", desc: "Berawan" },
-    ];
-
-    const weatherContainer = document.getElementById("weather-forecast");
-    forecastData.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "weather-card";
-        div.innerHTML = `<strong>${item.day}</strong><p>${item.temp}</p><small>${item.desc}</small>`;
-        weatherContainer.appendChild(div);
-    });
-
   function showDisease(tanaman) {
     const detail = document.getElementById("disease-detail");
     let content = "";
