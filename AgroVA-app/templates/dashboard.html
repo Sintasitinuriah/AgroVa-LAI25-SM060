@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
 <main class="main-dashboard">
+    <div class="image-hero-wrapper">
+      <img src="static/assets/dashboard.jpg" alt="Land Image" class="hero-image">
+      <div class="overlay-content">
+        <h1>Selamat Datang di AgroVA</h1>
+        <h5>AgroVA: Solusi Modern untuk Tantangan Pertanian Hari Ini</h5>
+        <p>AgroVA atau Agriculture Virtual Assistant dirancang untuk mengatasi permasalahan petani seperti penyakit tanaman Padi, Gandum, Singkong dan Kentang.</p>
+        <a href="#next-section" class="start-button">Mulai Sekarang!</a>
+      </div>
+    </div>
     <!-- Bagian Prediksi Cuaca -->
-    <section class="weather-section">
+    <section id="next-section" class="weather-section">
       <h2>🌤 Prediksi Cuaca</h2>
       <div class="weather-scroll-container">
         <div class="weather-grid" id="weather-forecast">
@@ -11,28 +20,85 @@
     </div>
     </section>
 
-    <!-- Bagian Card Penyakit Tanaman -->
     <section class="disease-section">
       <h2>🦠 Penyakit Umum Tanaman</h2>
       <div class="card-grid">
-        <div class="card">
-          <h3>Padi</h3>
-          <p>Hawar daun, blast, busuk leher, dll.</p>
+
+        <!-- Padi -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="static/assets/Padi.jpg" alt="Padi">
+              <h3>Padi</h3>
+            </div>
+            <div class="flip-card-back">
+              <h3>Penyakit Padi</h3>
+              <ul>
+                <li>Hawar Daun</li>
+                <li>Blast</li>
+                <li>Busuk Leher</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="card">
-          <h3>Singkong</h3>
-          <p>Busuk batang, mosaic, bercak daun, dll.</p>
+
+        <!-- Singkong -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="static/assets/Daung_singkong.jpg" alt="Singkong">
+              <h3>Singkong</h3>
+            </div>
+            <div class="flip-card-back">
+              <h3>Penyakit Singkong</h3>
+              <ul>
+                <li>Busuk Batang</li>
+                <li>Mosaic</li>
+                <li>Bercak Daun</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="card">
-          <h3>Gandum</h3>
-          <p>Rust, bunt, septoria leaf blotch, dll.</p>
+
+        <!-- Gandum -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="static/assets/Gandum.jpg" alt="Gandum">
+              <h3>Gandum</h3>
+            </div>
+            <div class="flip-card-back">
+              <h3>Penyakit Gandum</h3>
+              <ul>
+                <li>Rust</li>
+                <li>Bunt</li>
+                <li>Septoria Leaf Blotch</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="card">
-          <h3>Kentang</h3>
-          <p>Late blight, scab, virus Y, dll.</p>
+
+        <!-- Kentang -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="static/assets/Daun_kentang.jpg" alt="Kentang">
+              <h3>Kentang</h3>
+            </div>
+            <div class="flip-card-back">
+              <h3>Penyakit Kentang</h3>
+              <ul>
+                <li>Late Blight</li>
+                <li>Scab</li>
+                <li>Virus Y</li>
+              </ul>
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
+
 </main>
 
 <script>
@@ -55,5 +121,23 @@
         div.innerHTML = `<strong>${item.day}</strong><p>${item.temp}</p><small>${item.desc}</small>`;
         weatherContainer.appendChild(div);
     });
+
+  function showDisease(tanaman) {
+    const detail = document.getElementById("disease-detail");
+    let content = "";
+
+    if (tanaman === "padi") {
+      content = "<h3>🌾 Penyakit Padi</h3><ul><li>Hawar Daun</li><li>Blast</li><li>Busuk Leher</li></ul>";
+    } else if (tanaman === "singkong") {
+      content = "<h3>🍠 Penyakit Singkong</h3><ul><li>Busuk Batang</li><li>Mosaic</li><li>Bercak Daun</li></ul>";
+    } else if (tanaman === "gandum") {
+      content = "<h3>🌾 Penyakit Gandum</h3><ul><li>Rust</li><li>Bunt</li><li>Septoria Leaf Blotch</li></ul>";
+    } else if (tanaman === "kentang") {
+      content = "<h3>🥔 Penyakit Kentang</h3><ul><li>Late Blight</li><li>Scab</li><li>Virus Y</li></ul>";
+    }
+
+    detail.innerHTML = content;
+  }
+
 </script>
 {% endblock %}

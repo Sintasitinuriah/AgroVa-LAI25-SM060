@@ -118,7 +118,7 @@ def match_intent(text):
     all_examples = []
     intent_map = []
 
-    for intent_obj in data['intents']:
+    for intent_obj in intents['intents']:
         for example in intent_obj['pattern']:
             all_examples.append(preprocess(example))
             intent_map.append(intent_obj)
