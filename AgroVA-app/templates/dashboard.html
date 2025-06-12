@@ -17,6 +17,7 @@
         <div class="weather-grid" id="weather-forecast">
           {% if prediksi %}
             {% for item in prediksi %}
+            <p>Jumlah prediksi: {{ prediksi | length }}</p>
             <div class="weather-card">
               <h3>Hari ke-{{ item.day }}</h3>
               <p>Suhu: {{ item.temperature }} °C</p>

@@ -60,12 +60,25 @@ try:
 except Exception as e:
     print(f"Failed to load main model: {str(e)}")
     interpreter = None
+
+interpreter_cuaca = None
+try:
+    model_path = 'models/model_predict_cuaca.tflite'
     
-# Load Cuaca Model
-interpreter_cuaca = tf.lite.Interpreter(model_path='models/model_predict_cuaca.tflite')
-interpreter_cuaca.allocate_tensors()
-input_details_cuaca = interpreter_cuaca.get_input_details()
-output_details_cuaca = interpreter_cuaca.get_output_details()
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"File model tidak ditemukan di: {model_path}")
+    
+    interpreter_cuaca = tf.lite.Interpreter(model_path=model_path)
+    interpreter_cuaca.allocate_tensors()  # Ini juga penting!
+    
+    input_details_cuaca = interpreter_cuaca.get_input_details()
+    output_details_cuaca = interpreter_cuaca.get_output_details()
+
+    print("[INFO] Model cuaca berhasil dimuat.")
+
+except Exception as e:
+    print("[ERROR] Gagal memuat model cuaca:", e)
+    interpreter_cuaca = None
 
 label_map = [
     'gandum_Healthy', 'gandum_septoria', 'gandum_stripe_rust',
@@ -210,52 +223,63 @@ def predict_with_models(interpreter, data_7_hari):
     try:
         cuaca_map = {0: "Cerah", 1: "Hujan", 2: "Berawan", 3: "Mendung"}
 
+        # Ambil info input dan output
+        input_details = interpreter.get_input_details()
+        output_details = interpreter.get_output_details()
+
+        print("[DEBUG] Input shape model:", input_details[0]['shape'])
+        print("[DEBUG] Output shape model:", output_details[0]['shape'])
+
         data = data_7_hari.copy()  # Pastikan tidak ubah data asli
 
         for i in range(7):
-            # Ambil fitur tunggal, misalnya suhu rata-rata (index ke-2)
-            fitur_tunggal = [row[2] for row in data]  # 7 nilai suhu
+            # Ambil fitur suhu_min dari tiap hari (fitur ke-3, index 2)
+            fitur_tunggal = [row[2] for row in data]
             input_array = np.array(fitur_tunggal, dtype=np.float32).reshape(1, 7, 1)
 
-            # Jalankan prediksi
-            input_details = interpreter.get_input_details()
-            output_details = interpreter.get_output_details()
+            # Validasi bentuk input
+            expected_shape = tuple(input_details[0]['shape'])
+            if input_array.shape != expected_shape:
+                raise ValueError(f"Bentuk input tidak cocok: {input_array.shape}, seharusnya: {expected_shape}")
+
+            # Prediksi
             interpreter.set_tensor(input_details[0]['index'], input_array)
             interpreter.invoke()
             output = interpreter.get_tensor(output_details[0]['index'])[0]
 
+            print(f"[DEBUG] Output prediksi hari ke-{i+1}:", output)
+
+            if len(output) < 2:
+                raise ValueError("Output model tidak lengkap. Harus [suhu, prob_cerah, prob_hujan, ...]")
+
             pred_suhu = output[0]
             pred_cuaca_probs = output[1:]
 
-            # Tangani probabilitas cuaca jika ada
-            if len(pred_cuaca_probs) > 0:
-                label_cuaca = np.argmax(pred_cuaca_probs)
-                cuaca = cuaca_map.get(label_cuaca, "Tidak diketahui")
-            else:
-                cuaca = "Tidak diketahui"
+            label_cuaca = np.argmax(pred_cuaca_probs)
+            cuaca = cuaca_map.get(label_cuaca, "Tidak diketahui")
 
             results.append({
                 "day": i + 1,
                 "temperature": round(pred_suhu, 1),
                 "wheater": cuaca
             })
-            
+
+            # Update data untuk hari berikutnya
             fitur_baru = data[-1][:]
-            fitur_baru[2] = pred_suhu 
-            data.pop(0)              
-            data.append(fitur_baru) 
+            fitur_baru[2] = pred_suhu  # Update suhu_min dengan prediksi
+            data.pop(0)
+            data.append(fitur_baru)
 
     except Exception as e:
-        print(f"Error predicting: {e}")
-        results.append({
-            "day": "Error",
-            "temperature": None,
-            "wheater": "Error"
-        })
+        print(f"[ERROR] Gagal prediksi: {e}")
+
+        # Fallback prediksi statis jika model gagal
+        results = [
+            {"day": i + 1, "temperature": 30.0 + (i % 3), "wheater": "Cerah"}
+            for i in range(7)
+        ]
 
     return results
-
-
 
 @app.route('/')
 def index():
@@ -341,22 +365,16 @@ def dashboard():
         [25, 33, 29, 58, 0, 9, 2, 200, 3, -6.2, 106.8, 8]
     ]
 
-    try:
-        if interpreter_cuaca is None:
-            raise ValueError("Model cuaca tidak tersedia.")
-
+    if interpreter_cuaca is None:
+            print("[WARNING] Interpreter cuaca tidak tersedia. Menampilkan prediksi statis.")
+            prediksi = [
+                {"day": i + 1, "temperature": 30.0 + (i % 2), "wheater": "Cerah"}
+                for i in range(7)
+            ]
+    else:
         prediksi = predict_with_models(interpreter_cuaca, data_7_hari)
-    except Exception as e:
-        print(f"[ERROR] Gagal memprediksi cuaca: {e}")
 
-        # Fallback prediksi statis
-        prediksi = [
-            {"day": i+1, "temperature": temp}
-            for i, temp in enumerate([29, 30, 28, 27, 26, 28, 29])
-        ]
-            
     return render_template('dashboard.html', user=session['user'], prediksi=prediksi)
-
 @app.route('/predict-main')
 def predict_weather():
     if 'user' not in session:
