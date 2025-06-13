@@ -1,1 +1,7 @@
 Flask==2.3.3
+gunicorn==20.0.2
+numpy
+scikit-learn
+Pillow
+tensorflow-cpu
+gdown

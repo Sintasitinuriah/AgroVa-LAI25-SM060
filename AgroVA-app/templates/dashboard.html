@@ -1,59 +1,152 @@
 {% extends 'base.html' %}
 {% block content %}
 <main class="main-dashboard">
+    <div class="image-hero-wrapper">
+      <img src="static/assets/dashboard.jpg" alt="Land Image" class="hero-image">
+      <div class="overlay-content">
+        <h1>Selamat Datang di AgroVA</h1>
+        <h5>AgroVA: Solusi Modern untuk Tantangan Pertanian Hari Ini</h5>
+        <p>AgroVA atau Agriculture Virtual Assistant dirancang untuk mengatasi permasalahan petani seperti penyakit tanaman Padi, Gandum, Singkong dan Kentang.</p>
+        <a href="#next-section" class="start-button">Mulai Sekarang!</a>
+      </div>
+    </div>
     <!-- Bagian Prediksi Cuaca -->
-    <section class="weather-section">
+    <section id="next-section" class="weather-section">
       <h2>🌤 Prediksi Cuaca</h2>
       <div class="weather-scroll-container">
         <div class="weather-grid" id="weather-forecast">
-            <!-- JS akan inject data di sini -->
-        </div>
-    </div>
-    </section>
-
-    <!-- Bagian Card Penyakit Tanaman -->
-    <section class="disease-section">
-      <h2>🦠 Penyakit Umum Tanaman</h2>
-      <div class="card-grid">
-        <div class="card">
-          <h3>Padi</h3>
-          <p>Hawar daun, blast, busuk leher, dll.</p>
-        </div>
-        <div class="card">
-          <h3>Singkong</h3>
-          <p>Busuk batang, mosaic, bercak daun, dll.</p>
-        </div>
-        <div class="card">
-          <h3>Gandum</h3>
-          <p>Rust, bunt, septoria leaf blotch, dll.</p>
-        </div>
-        <div class="card">
-          <h3>Kentang</h3>
-          <p>Late blight, scab, virus Y, dll.</p>
+          {% if prediksi %}
+            {% for item in prediksi %}
+            <p>Jumlah prediksi: {{ prediksi | length }}</p>
+            <div class="weather-card">
+              <h3>Hari ke-{{ item.day }}</h3>
+              <p>Suhu: {{ item.temperature }} °C</p>
+            </div>
+            {% endfor %}
+          {% else %}
+            <p>Data prediksi cuaca belum tersedia.</p>
+          {% endif %}
         </div>
       </div>
     </section>
+
+    <section class="disease-section">
+      <h2>🦠 Penyakit Umum Tanaman</h2>
+      <div class="card-grid">
+
+        <!-- Padi -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="static/assets/Padi.jpg" alt="Padi">
+              <h3>Padi</h3>
+            </div>
+            <div class="flip-card-back">
+              <h3>Penyakit Padi</h3>
+              <ul>
+                <li>Hawar Daun</li>
+                <li>Blast</li>
+                <li>Busuk Leher</li>
+                <li>Tungro</li>
+              </ul>
+              <a href="/predict-main" class="predict-button">Prediksi</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Singkong -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="static/assets/Daung_singkong.jpg" alt="Singkong">
+              <h3>Singkong</h3>
+            </div>
+            <div class="flip-card-back">
+              <h3>Penyakit Singkong</h3>
+              <ul>
+                <li>Hawar bakteri pada singkong</li>
+                <li>Penyakit garis coklat pada singkong</li>
+                <li>Singkong bercak hijau</li>
+                <li>Sehat</li>
+                <li>Penyakit mosaik pada singkong</li>
+              </ul>
+              <a href="/predict-main" class="predict-button">Prediksi</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gandum -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="static/assets/Gandum.jpg" alt="Gandum">
+              <h3>Gandum</h3>
+            </div>
+            <div class="flip-card-back">
+              <h3>Penyakit Gandum</h3>
+              <ul>
+                <li>Aphid (Kutu Daun)</li>
+                <li>Karat hitam</li>
+                <li>Ledakan</li>
+                <li>Karat coklat</li>
+                <li>Busuk akar umum</li>
+                <li>Fusarium pada bulir</li>
+                <li>Sehat</li>
+                <li>Hawar daun</li>
+                <li>Embun tepung</li>
+                <li>Tungau</li>
+                <li>Septoria</li>
+                <li>Kotoran hitam (Smut)</li>
+                <li>Lalat batang</li>
+                <li>Bercak coklat (Tan Spot)</li>
+                <li>Karat kuning</li>
+              </ul>
+              <a href="/predict-main" class="predict-button">Prediksi</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kentang -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="static/assets/Daun_kentang.jpg" alt="Kentang">
+              <h3>Kentang</h3>
+            </div>
+            <div class="flip-card-back">
+              <h3>Penyakit Kentang</h3>
+              <ul>
+                <li>Late Blight</li>
+                <li>Scab</li>
+                <li>Virus Y</li>
+              </ul>
+              <a href="/predict-main" class="predict-button">Prediksi</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
 </main>
 
 <script>
-    // Simulasi data cuaca - kamu bisa ganti dengan API
-    const forecastData = [
-        { day: "Hari Ini", temp: "30°C", desc: "Cerah" },
-        { day: "Senin", temp: "28°C", desc: "Berawan" },
-        { day: "Selasa", temp: "29°C", desc: "Hujan ringan" },
-        { day: "Rabu", temp: "27°C", desc: "Hujan sedang" },
-        { day: "Kamis", temp: "30°C", desc: "Cerah" },
-        { day: "Jumat", temp: "31°C", desc: "Cerah Berawan" },
-        { day: "Sabtu", temp: "29°C", desc: "Gerimis" },
-        { day: "Minggu", temp: "28°C", desc: "Berawan" },
-    ];
+  function showDisease(tanaman) {
+    const detail = document.getElementById("disease-detail");
+    let content = "";
 
-    const weatherContainer = document.getElementById("weather-forecast");
-    forecastData.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "weather-card";
-        div.innerHTML = `<strong>${item.day}</strong><p>${item.temp}</p><small>${item.desc}</small>`;
-        weatherContainer.appendChild(div);
-    });
+    if (tanaman === "padi") {
+      content = "<h3>🌾 Penyakit Padi</h3><ul><li>Hawar Daun</li><li>Blast</li><li>Busuk Leher</li></ul>";
+    } else if (tanaman === "singkong") {
+      content = "<h3>🍠 Penyakit Singkong</h3><ul><li>Busuk Batang</li><li>Mosaic</li><li>Bercak Daun</li></ul>";
+    } else if (tanaman === "gandum") {
+      content = "<h3>🌾 Penyakit Gandum</h3><ul><li>Rust</li><li>Bunt</li><li>Septoria Leaf Blotch</li></ul>";
+    } else if (tanaman === "kentang") {
+      content = "<h3>🥔 Penyakit Kentang</h3><ul><li>Late Blight</li><li>Scab</li><li>Virus Y</li></ul>";
+    }
+
+    detail.innerHTML = content;
+  }
+
 </script>
 {% endblock %}

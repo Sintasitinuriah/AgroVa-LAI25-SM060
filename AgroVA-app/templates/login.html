@@ -1,13 +1,24 @@
 {% extends 'base.html' %}
 {% block title %}Login{% endblock %}
 {% block content %}
-<div class="login-container">
-    <h2>🔐 Login AgroVA</h2>
+<div class="grid-container">
+  <div class="image-container">
+    <div class="image-overlay">
+      <h1>Selamat Datang di AgroVA</h1>
+      <h5>AgroVA: Solusi Modern untuk Tantangan Pertanian Hari Ini</h5>
+      <p>AgroVA atau Agriculture Virtual Assistant dirancang untuk mengatasi permaslaahan yang dialami para petani khususnya penyakit tanaman Padi, Gandum, Singkong dan Kentang</p>
+      <button type="submit" >Mulai</button>
+    </div>
+    <img src="static/assets/login.png" alt="Nature Image">
+  </div>
+  <div class="login-container">
+    <h2>Login AgroVA</h2>
     <form method="post">
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
+  </div>
 </div>
 {% if error %}
 <p style="color:red;">{{ error }}</p>

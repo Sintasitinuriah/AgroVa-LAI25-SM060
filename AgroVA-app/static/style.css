@@ -2,11 +2,17 @@
 * {
   box-sizing: border-box;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   background: #e0f2f1;
   margin: 0;
   padding: 0;
+  height: auto;
 }
 
 /* Navbar */
@@ -15,7 +21,7 @@ body {
   top: 0;
   width: 100%;
   background-color: #004d40;
-  padding: 25px 30px;
+  padding: 10px 10px;
   color: white;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   z-index: 1000;
@@ -49,21 +55,81 @@ body {
   padding-top: 100px;
 }
 
-/* Login */
+.grid-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  height: 100vh;
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image-container img {
+  width: 100%;
+  min-height: 100%;
+  max-height: 99.2vh;
+  object-fit: cover;
+}
+
+/* Teks di atas gambar */
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items:left;
+  text-align:left;
+  padding: 20px;
+}
+
+.image-overlay h1 {
+  font-size: 3rem;
+  margin: 25px 0 10px 0;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.image-overlay h5 {
+  font-size: 1.5rem;
+  margin: 0 0 5px 0;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.image-overlay p {
+  font-size: 0.8rem;
+  margin: 0 0 5px 0;
+  max-width: 80%;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+
+.image-overlay button{
+  margin: 15px 0 10px 0;
+  width: 150px;
+}
+
 .login-container {
-  background: white;
   padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   width: 320px;
-  margin: 150px auto 0;
+  margin: auto;
   text-align: center;
 }
 
 input {
   width: 100%;
   padding: 10px;
-  margin: 0 0 4px 0;
+  margin-bottom: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
   display: block; 
@@ -131,7 +197,7 @@ button:hover {
   display: flex;
   min-height: 92vh;
   max-width: 1600px;
-  margin: 120px auto 0;
+  margin: 45px auto 0;
   padding: 30px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   background-color: #fff;
@@ -220,12 +286,88 @@ button:hover {
 
 /* Dashboard */
 .main-dashboard {
-  padding: 2rem;
+  padding: 0.8rem;
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  margin-top: 60px;
+  margin-top: 10px;
 }
+
+.image-hero-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  margin-left: calc(-50vw + 50%);
+  padding: 0 50px;
+  flex-direction: column;
+  justify-content:left;
+  align-items:left;
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: brightness(60%);
+}
+
+.overlay-content {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  color: white;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Teks utama */
+.overlay-content h1 {
+  font-size: 3.5rem;
+  margin: 0 10px 0 0;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.overlay-content h5 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+  margin: 10px 25px 10px 0;
+  font-weight: normal;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.overlay-content p {
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 10px 25px 10px 0;
+  line-height: 1.5;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Tombol */
+.start-button {
+  display: inline-block;
+  padding: 10px 25px;
+  background: #004d40;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.start-button:hover {
+  background: #00796b;
+}
+
+.overlay-content button:hover {
+  background-color: #00796b;
+}
+
 .weather-section h2,
 .disease-section h2 {
   margin-bottom: 1rem;
@@ -252,19 +394,99 @@ button:hover {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
+.predict-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.predict-button:hover {
+  background-color: #45a049;
+}
+
+
 /* Card Grid */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  gap: 20px;
+  /* justify-content: center; */
+  padding: 20px;
 }
-.card {
-  background-color: #ffffff;
-  padding: 1.5rem;
-  border-radius: 10px;
-  border-left: 6px solid #004d40;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+.flip-card {
+  background-color: transparent;
+  width: 250px;
+  height: 270px;
+  perspective: 1000px;
 }
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.flip-card-front {
+  background: #fff;
+}
+
+.flip-card-front img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.flip-card-front h3 {
+  margin: 1px 0;
+}
+
+.flip-card-back {
+  background-color: #f1f8e9;
+  color: #333;
+  justify-content: left;
+  transform: rotateY(180deg);
+  padding: 20px;
+}
+
+.flip-card-back h3 {
+  margin-bottom: 10px;
+}
+
+.flip-card-back ul {
+  text-align: left;
+  padding-left: 20px;
+  margin: 0;
+  list-style-type: disc;
+}
+
+.flip-card-back li {
+  margin-bottom: 6px;
+}
+
 /* Prediction Cards */
 .prediction-card-grid {
   display: flex;
@@ -284,6 +506,14 @@ button:hover {
   transition: transform 0.2s;
   text-align: center;
 }
+
+.prediction-card img{
+  min-width: 100px;
+  max-width: 200px;
+  height: 150px;
+  object-fit: cover;
+}
+
 .prediction-card:hover {
   transform: translateY(-5px);
 }
@@ -329,12 +559,21 @@ form {
 
 .form-container {
   max-width: 600px;
-  margin: 80px auto;
+  margin: 45px auto;
   padding: 10px;
   border-radius: 12px;
 }
 
+.form-container h2{
+  margin: 5px 10px 5px 5px;
+}
+
 h2 {
+  text-align: center;
+  margin: 0 5px 0 0;
+}
+
+h3 {
   text-align: center;
 }
 
@@ -359,6 +598,9 @@ h2 {
   .card-grid {
     margin-top: 10%;
     grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
+    align-items: center
   }
   .hamburger {
     display: block;
@@ -406,6 +648,9 @@ h2 {
   .card-grid {
     margin-top: 10%;
     grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center
   }
   .login-container {
     width: 90%;
